@@ -1,0 +1,26 @@
+﻿@model List<Cart>
+
+<h2>Asset List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Qunatity</th>
+            <th>Total Cost</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cart in Model)
+        {
+            <tr>
+                <td>@cart.AssetName</td>
+                <td>@cart.AssetQuantity</td>
+                <td>@cart.TotalCost</td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+

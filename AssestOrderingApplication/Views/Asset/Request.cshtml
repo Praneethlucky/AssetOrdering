@@ -1,0 +1,123 @@
+﻿<div class="d-flex justify-content-center align-items-center poppins-semibold">
+    <h4>You are almost done!</h4>
+</div>
+
+@{
+    var options = new List<string> { "Bizview", "Calumo", "IDL", "Viareport", "Tidemark", "Longview Close", 
+            "Clausion", "Legerity", "Cubeware", "Disclosure Management", "Logi", "Dundas", "Data Intelligence",
+            "Equity", "Spreadsheet Server", "Hubble", "Jet", "Wands", "Atlas", "BizInsight", "Event1", 
+            "Mekko Graphics", "CXO", "Angles", "Process Runner", "Longview Analytics", "Power ON", "Simba", 
+            "SourceConnect", "Tax", "Lease Accelerator", "Fiplana", "FX Loader", "Other / not assigned" };
+
+    var selectedOption = ViewBag.SelectedOption as string;
+
+    //dummy data
+    @model List<Cart>
+}
+
+<div class="container m-5" style="background-color:#ECFAFF; border-radius: 30px">
+    <div class="form-container p-3" style="color: #31AB46">
+        <span></span>
+        <strong>Employee</strong> 
+        <p>@User.Identity.Name.Split('\\').Last() </p>
+
+        <strong>Manager</strong> 
+        <p>@User.Identity.Name.Split('\\').Last() </p>
+        <form id="RequestForm" asp-action="RequestApproval" asp-controller="Asset" method="post">
+            <div class="form-group">
+                <label for="options">Product Family</label>
+                <select class="form-control" id="dropdown" name="ProductFamily" required>
+                    <option value="default">Please select</option>
+                    @foreach (var option in options)
+                    {
+                        <option value="@option">@option</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="deliveryDropdown">Deliver To</label>
+                <select class="form-control" id="deliveryDropdown" name="DeliverTo" required>
+                    <option value="default">Please select</option>
+                    <option value="Home">Home</option>
+                    <option value="Office">Office</option>
+                </select>
+            </div>
+
+            <div class="form-group hidden" id="addressInput">
+                <input type="text" class="form-control" id="extra1" name="Address" placeholder="Enter Address" required>
+            </div>
+
+            <div class="form-group hidden" id="officeLocation">
+                <label for="extra2">Select Office</label>
+                <select class="form-control" id="officeDropdown" name="OfficeLocation">
+                    <option value="Bangalore">Bangalore</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="countryDropdown">Country</label>
+                <select class="form-control" id="countryDropdown" name="Country" required>
+                    <option value="default">Please select</option>
+                    <option value="india">India</option>
+                    <option value="us">US</option>
+                    <option value="eu">EU</option>
+                    <option value="uk">UK</option>
+                    <option value="australia">Australia</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="number">Contact Number</label>
+                <input type="number" class="form-control" id="number" name="PhoneNumber" placeholder="Enter contact number." required>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Comments</label>
+                <textarea class="form-control" id="message" name="Comments" rows="3" placeholder="Enter your message"></textarea>
+            </div>
+
+            <p class="text-left">Review Order</p>
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-4 mb-3">
+                        <div class="card" style="background-color: #007AC9; color: #ECFAFF">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.AssetName</h5>
+                                <p class="card-text">Quantity: @item.AssetQuantity - @item.TotalCost $</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="form-group d-flex justify-content-end">
+                <button type="button" class="btn btn-custom mr-4 mt-4" onclick="location.href='@Url.Action("EditOrder", "Asset")'" @(Model.Count<=0 ? "Disabled":"")>Edit Order</button>
+                <button type="submit" class="btn btn-custom mt-4">Request Approval</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+            $('.hidden').hide();
+            $('#deliveryDropdown').change(function () {
+                var selectedOption = $(this).val();
+                $('.form-group.hidden').hide();
+                if (selectedOption === 'Home') {
+                    $('#addressInput').show();
+                }
+                else if (selectedOption === 'Office') {
+                    $('#officeLocation').show();
+                }
+            });
+        });
+    </script>
+}
